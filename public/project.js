@@ -34,7 +34,8 @@ const app = new Vue({
     viewTask: function(name){
       localStorage.setItem('tag', name)
       window.location.href = 'task.html'
-    },
+    }
+    ,
     removeProject: function(name){
       const self = this
       const newData = self.list_project.filter(function(tag){
@@ -44,8 +45,14 @@ const app = new Vue({
       self.list_project = newData
 
       console.log(newData);
+
+      const array = newData.map(function(dat){
+        return dat.name
+      })
+
+      console.log(array);
       axios.put(`http://localhost:3000/user/tag/${localStorage.getItem('id')}`,{
-        tag: self.list_project.name//not finish
+        tag: array//not finish
       })
       .then(row=>{
         console.log(row);

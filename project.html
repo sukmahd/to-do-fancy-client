@@ -117,8 +117,8 @@
                 <div class="thumbnail">
                   <img @click="viewTask(project.name)" style="height:80px; margin-top:20px;" src="http://cdn.onlinewebfonts.com/svg/img_75866.svg" alt="icon">
                   <div class="caption text-center text-gray">
-                    <h3>{{project.name}}</h3>
-                    <!-- @click="removeProject(project.name)" -->
+                    <h3 @click="removeProject(project.name)">{{project.name}}</h3>
+
                     <p>{{project.count}} task</p>
                   </div>
                 </div>
