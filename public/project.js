@@ -10,6 +10,7 @@ const app = new Vue({
   },
   methods:{
     addTag:function(){
+      console.log(localStorage.getItem('id'));
       const self = this
       axios.post(`http://localhost:3000/user/${localStorage.getItem('id')}`,{
         tag: self.tag
@@ -38,28 +39,43 @@ const app = new Vue({
     ,
     removeProject: function(name){
       const self = this
-      const newData = self.list_project.filter(function(tag){
-          if(tag.name != name) return tag
-      })
+			 swal({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!',
+			  closeOnConfirm: true,
+			}).then(function(){
+          //function here
+            const newData = self.list_project.filter(function(tag){
+                if(tag.name != name) return tag
+            })
 
-      self.list_project = newData
+            self.list_project = newData
 
-      console.log(newData);
+            const array = newData.map(function(dat){
+              return dat.name
+            })
 
-      const array = newData.map(function(dat){
-        return dat.name
-      })
-
-      console.log(array);
-      axios.put(`http://localhost:3000/user/tag/${localStorage.getItem('id')}`,{
-        tag: array//not finish
-      })
-      .then(row=>{
-        console.log(row);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+            axios.put(`http://localhost:3000/user/tag/${localStorage.getItem('id')}`,{
+              tag: array
+            })
+            .then(row=>{
+              console.log(row);
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+          //logic end
+                  swal(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  );
+                })
     }
   },
   created:function(){

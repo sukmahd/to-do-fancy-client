@@ -10,6 +10,18 @@ const app = new Vue({
     id: localStorage.getItem('id')
   },
   methods:{
+    checkTask: function(id){
+      const self = this
+      axios.put(`http://localhost:3000/task/${id}`, {
+        status: true
+      })
+      .then(resp => {
+        console.log(resp);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
     addTask: function(){
       const self = this
       axios.post('http://localhost:3000/task',{
@@ -40,22 +52,41 @@ const app = new Vue({
     },
     removeTask: function(idt){
       const self = this
-      axios.delete(`http://localhost:3000/user/${self.id}/${idt}`,{
-        headers:{
-          token: localStorage.getItem('token')
-        }
-      })
-      .then(log=>{
-        const newData = self.task_list.filter(function(task){
-          return task._id != idt
-        })
+      swal({
+       title: 'Are you sure?',
+       text: "You won't be able to revert this!",
+       type: 'warning',
+       showCancelButton: true,
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       confirmButtonText: 'Yes, delete it!',
+       closeOnConfirm: true,
+     }).then(function(){
+         //function here
+         axios.delete(`http://localhost:3000/user/${self.id}/${idt}`,{
+           headers:{
+             token: localStorage.getItem('token')
+           }
+         })
+         .then(log=>{
+           const newData = self.task_list.filter(function(task){
+             return task._id != idt
+           })
 
-        self.task_list = newData
-        console.log(log);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+           self.task_list = newData
+           console.log(log);
+         })
+         .catch(err=>{
+           console.log(err);
+         })
+
+         //logic end
+                 swal(
+                   'Deleted!',
+                   'Your file has been deleted.',
+                   'success'
+                 );
+               })
     }
   },
   created:function(){

@@ -18,10 +18,14 @@ const app = new Vue({
       })
       .then(log=>{
         console.log(log.data);
-        const tokenJwt = log.data.token
-        localStorage.setItem('token', tokenJwt)
-        localStorage.setItem('id', log.data.id)
-        window.location.href = 'project.html'
+        if(log.data.token){
+          const tokenJwt = log.data.token
+          localStorage.setItem('token', tokenJwt)
+          localStorage.setItem('id', log.data.id)
+          window.location.href = 'project.html'
+        }else {
+          alert('login gagal')
+        }
       })
       .catch(err=>{
         console.log(err);
